@@ -2,6 +2,7 @@ package com.djavani.curso.boot.domain;
 
 import javax.persistence.*;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "CARGOS")
 public class Cargo extends AbstractEntity<Long>{
