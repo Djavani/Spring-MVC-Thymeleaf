@@ -8,12 +8,14 @@
 		<nav class="navbar navbar-expand-md bg-light">
 			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active"><i class="oi oi-caret-right"></i>
-						<span>Lista de Funcionários</span></li>
+					<li class="nav-item active">
+						<i class="oi oi-caret-right"></i>
+						<span>Lista de Funcionários</span>
+					</li>
 				</ul>
-				<a class="btn btn-primary btn-md" href="/funcionarios/cadastrar"
-					role="button"> <span class="oi oi-plus" title="Cadastro"
-					aria-hidden="true"></span> <span>Cadastrar Funcionários</span>
+				<a class="btn btn-primary btn-md" href="/funcionarios/cadastrar" role="button"> 
+					<span class="oi oi-plus" title="Cadastro" aria-hidden="true"></span> 
+					<span>Cadastrar Funcionários</span>
 				</a>
 			</div>
 		</nav>
@@ -37,10 +39,9 @@
 					<div class="collapse" id="collapseNome">
 
 						<nav class="navbar navbar-light bg-light">
-							<form class="form-inline" method="GET"
-								action="/funcionarios/buscar/nome">
-								<input class="form-control mr-sm-2" type="search"
-									placeholder="nome" aria-label="Search" name="nome" />
+							<form class="form-inline" method="GET" action="/funcionarios/buscar/nome">
+								<input class="form-control mr-sm-2" type="search" placeholder="nome" 
+									aria-label="Search" name="nome" />
 								<button class="btn btn-outline-success my-2 my-sm-0">Search</button>
 							</form>
 						</nav>
@@ -53,10 +54,8 @@
 					<div class="collapse" id="collapseCargo">
 
 						<nav class="navbar navbar-light bg-light">
-							<form class="form-inline" method="GET"
-								action="/funcionarios/buscar/cargo">
-								<select class="form-control mr-sm-2" name="cargo"
-									aria-label="Search">
+							<form class="form-inline" method="GET"	action="/funcionarios/buscar/cargo">
+								<select class="form-control mr-sm-2" name="cargo" aria-label="Search">
 									<option value="">Cargo</option>
 									<option value="1">Auxiliar Contábil</option>
 									<option value="2">Auxiliar Administrativo</option>
@@ -113,26 +112,34 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td>Jorge da Silva</td>
-							<td>R$ 3.500,99</td>
-							<td>Recursos Humanos</td>
-							<td>Auxiliar de RH</td>
+						<tr th:each="funcionario : ${funcionarios}">						
+							<td th:text="${funcionario.id}">1</td>
+							<td th:text="${funcionario.nome}">Jorge da Silva</td>
+							<td th:text="|R$ ${{funcionario.salario}}|">R$ 3.500,99</td>
+							<td th:text="${funcionario.cargo.departamento.nome}">Recursos Humanos</td>
+							<td th:text="${funcionario.cargo.nome}">Auxiliar de RH</td>
 							<td>
-								<button type="button" class="btn btn-secondary btn-sm"
-									data-container="body" data-toggle="popover"
-									data-placement="top"
-									data-content="Rua das Oliveiras, 260 Fundos - Centro, Porto Alegre - RS - 97050-015">
+								<button type="button" class="btn btn-secondary btn-sm" data-container="body" 
+									data-toggle="popover" data-placement="top"
+									th:attr="data-content=${#strings.concat(
+										funcionario.endereco.logradouro, ', ',
+										funcionario.endereco.numero, ' ',
+										funcionario.endereco.complemento, ' - ',
+										funcionario.endereco.bairro, ', ',
+										funcionario.endereco.cidade, ', ',
+										funcionario.endereco.uf.sigla, ' - ',
+										funcionario.endereco.cep 
+									)}">
+									
 									<span class="oi oi-eye" title="Visualizar" aria-hidden="true"></span>
 								</button>
 							</td>
-							<td>01/10/2014</td>
-							<td></td>
-							<td colspan="2"><a class="btn btn-info btn-sm"
-								href="/funcionarios/editar/1" role="button"> <span
-									class="oi oi-brush" title="Editar" aria-hidden="true"></span>
-							</a>
+							<td th:text="${#temporals.format(funcionario.dataEntrada, 'dd/MM/yyyy')}">01/10/2014</td>
+							<td th:text="${#temporals.format(funcionario.dataSaida, 'dd/MM/yyyy')}">01/10/2014</td>							
+							<td colspan="2">
+								<a class="btn btn-info btn-sm"	href="/funcionarios/editar/1" role="button"> 
+									<span class="oi oi-brush" title="Editar" aria-hidden="true"></span>
+								</a>
 								<button id="btn_funcionarios/excluir/1" type="button"
 									class="btn btn-danger btn-sm" data-toggle="modal"
 									data-target="#myModal">
